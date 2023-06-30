@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image to Hex Converter</title>
+</head>
+<body>
+    <h1>Image to Hex Converter</h1>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*">
+        <input type="submit" value="Upload">
+    </form>
+    <br>
+    <button id="convertBtn" onclick="convertImageToHex()">Convert to Hex</button>
+    <br>
+    <textarea id="hexResult" rows="10" cols="50" readonly></textarea>
+    <script>
+        function convertImageToHex() {
+            var fileInput = document.querySelector('input[type="file"]');
+            var file = fileInput.files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var result = e.target.result;
+                var hexString = convertToHexString(result);
+                document.getElementById('hexResult').value = hexString;
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function convertToHexString(buffer) {
+            var byteArray = new Uint8Array(buffer);
+            var hexParts = [];
+            for (var i = 0; i < byteArray.length; i++) {
+                var hex = byteArray[i].toString(16);
+                var paddedHex = ('00' + hex).slice(-2);
+                hexParts.push(paddedHex);
+            }
+            var hexString = hexParts.join('');
+            while (hexString.length < 64) {
+                hexString += '0'; // Pad with zeros if necessary
+            }
+            return hexString.substring(0, 64); // Limit the result to 64 characters
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contract Unspent List</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<style>
+  body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+    ul {
+      list-style-type: none;
+      cursor: pointer;
+    }
+    li {
+      padding: 5px;
+      margin: 5px;
+      background-color: lightgray;
+      border-radius: 5px;
+    }
+    
+    .tab {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tab button {
+  background-color: #f2f2f2;
+  border: none;
+  color: #000;
+  padding: 10px 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tab button:hover {
+  background-color: #fa2347;
+}
+
+.tab button.active {
+  background-color: #1aeb6a;
+}
+ 
+    .tabcontent {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+    }
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      z-index: 9999;
+      display: none;
+    }
+
+    .popup label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .popup input[type="text"] {
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .popup button {
+      padding: 5px 10px;
+      background-color: #ccc;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .popup button:hover {
+      background-color: #bbb;
+    }
+    .popup label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .popup input[type="text"] {
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .popup button {
+      padding: 5px 10px;
+      background-color: #ccc;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .popup button:hover {
+      background-color: #bbb;
+  
+        }
+
+        .tabcontent {
+  display: none;
+}
+.nft-image {
+      float: left;
+      max-width: 150px;
+      margin-right: 10px;
+    }
+
+    .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-gap: 10px;
+  }
+
+  .gallery-item {
+    padding: 5px;
+    background-color: rgb(68, 33, 226);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    color: #ffffff;
+         
+  }
+
+  .gallery-item:hover {
+    background-color: rgb(3, 168, 31);
+  }
+
+  .token-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+
+  .token-details {
+    text-align: center;
+  }
+
+  .token-details p {
+    margin: 5px 0;
+  }
+  .menu {
+            background-color: #0e0b0b;
+            width: 200px;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            transition: transform 0.3s;
+            z-index: 999;
+        }
+
+        .menu-button {
+            background-color: #f1f1f1;
+
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 999;
+
+        }
+
+        .menu-button i {
+            background-color: #f1f1f1;
+
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .menu-items {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+        }
+
+        .menu-item {
+            margin-bottom: 10px;
+            background-color: #040405;
+            font-weight: bold;
+            align-items: center;
+            justify-content: center; /* Center vertically */
+            display: block;
+            border: none;
+        
+        }
+
+        .menu-item a {
+            display: block;
+            padding: 10px 0;
+            font-weight: bold;
+            align-items: center;
+     
+            text-decoration: none;
+            color:#f1f1f1;
+            justify-content: center;
+        }
+
+        .menu-item a:hover {
+            background-color: #d41610;
+             color: #f1f1f1;
+        }
+
+        @media (max-width: 768px) {
+            .menu {
+                transform: translateX(-100%);
+            }
+        }
+
+        .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px; /* Added margin to separate from the text above */
+    
+        }
+        .price {
+    display: flex;
+    align-items: center;
+}
+
+.price-text {
+    margin-right: 10px;
+    color:#ffffff
+}
+
+.price-image {
+    width: 30px; /* Adjust the width as needed */
+    height: 30px; /* Adjust the height as needed */
+}
+.menu-toggle {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            background-color: #007bff;
+
+        }
+
+        .menu-toggle:hover {
+            color: blue;
+        }
+
+    </style>
+</head>
+<body>
+
+  <div class="menu">
+    <ul class="menu-items">
+      <br><br> <li class="menu-item"><a href="/mainer.html"><i class="fa fa-wallet "></i>  NOVO WALLET</a></li>
+      <li class="menu-item"><a href="/contract_unspent"><i class="fa fa-landmark"></i>  TOKENS / NFT BALANCE</a></li>
+      <li class="menu-item"><a href="/transaction_history?account="><i class="fa fa-clock"></i> HISTORY ACTIVITY </a></li>
+      <li class="menu-item"><a href="/templates/ohlc.html"> Chart</a></li>
+      <li class="menu-item"><a href="#"><i class="fa fa-wrench"></i>  SETTINGS</a></li>
+  </ul>
+ <br><br><br><br>
+    <br><br><br><br>
+    <br>
+       <div>            
+        <img src="{{ url_for('static', filename='original.png') }}" alt="Image"width="30" height="30">
+        <h3 class="price-text">Novo Price: <span id="closePrice">{{ formatted_close_price }}</span> $</h3>
+    </div>     
+</div>
+
+<div class="menu-button" onclick="toggleMenu()">
+    <i class="fas fa-bars"></i>
+</div>
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script>
+    function toggleMenu() {
+        var menu = document.querySelector('.menu');
+
+        if (menu.style.transform === 'translateX(-100%)') {
+            menu.style.transform = 'translateX(0)';
+        } else {
+            menu.style.transform = 'translateX(-100%)';
+        }
+    }
+</script>
+
+   
+<script>
+    // Make a GET request to the /get_close_price route
+    fetch('/get_close_price')
+      .then(response => response.text())
+      .then(closePrice => {
+        // Update the content of the placeholder element with the received close price
+        document.getElementById('closePrice').textContent = closePrice;
+    
+    
+      })
+     </script>
+
+    
+<br><br><br><br>
+
+    <div class="tab">
+        <button class="tablinks" data-tab="Tokens" onclick="openTab(event, 'Tokens')">Tokens</button>
+        <button class="tablinks" data-tab="NFT" onclick="openTab(event, 'NFT')">NFT</button>
+        <button class="tablinks" onclick="openCreateTokenPopup()">Create Token</button>
+        <button class="tablinks" onclick="openMintTokenPopup()">mint Token</button>
+        
+
+
+        <button class="tablinks" data-tab="Activity" onclick="openTab(event, 'Activity')">Activity</button>
+
+      </div>
+      
+      <div id="Tokens" class="tabcontent">
+        <h2>Tokens</h2>
+        <p>Tokens list.</p>
+        <div class="gallery" id="list-container">
+          {% for item in contract_unspent_data %}
+            {% if item.contractType == 'FT' or item.contractType == 'FT_MINT' %}
+              <div class="gallery-item" onclick="showTokenDetails('{{ item.contractID }}')">
+                <img src="{{ item.contractMetadata }}" alt="NFT Image" class="token-image">
+                <div class="token-details">
+                  <p>Type: {{ item.contractType }}</p>
+                  <p>Max Supply: {{ item.contractMaxSupply }}</p>
+                  <p>name: {{ item.contractMetadata }}</p>
+                  
+                  <p>Balance: {{ item.contractValue }}</p>
+                  {% if item.contractType == 'FT' %}
+                    <button onclick="openTransferDialog('{{ item.contractType }}', '{{ item.contractID }}')">Send NFT</button>
+                  {% elif item.contractType == 'FT_MINT' %}
+                    <button onclick="openMintDialog('{{ item.contractType }}', '{{ item.contractID }}')">Mint NFT</button>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    
+      
+          
+      <div id="NFT" class="tabcontent">
+        <h2>NFT</h2>
+        <p>NFT list.</p>
+        <div class="gallery" id="list-container">
+          {% for item in contract_unspent_data %}
+            {% if item.contractType == 'NFT' or item.contractType == 'NFT_MINT' %}
+              <div class="gallery-item" onclick="showTokenDetails('{{ item.contractID }}')">
+                <img src="{{ item.contractMetadata }}" alt="NFT Image" class="nft-image">
+                <div class="token-details">
+            
+                <p>Max Supply: {{ item.contractMaxSupply }}</p>
+                <p>Type: {{ item.contractType }}</p>
+                <p>Balance: {{ item.contractValue }}</p>
+                {% if item.contractType == 'NFT' %}
+                  <button onclick="openTransferDialog('{{ item.contractType }}', '{{ item.contractID }}')">Send NFT</button>
+                {% elif item.contractType == 'NFT_MINT' %}
+                  <button onclick="openMintDialog('{{ item.contractType }}', '{{ item.txid }}')">Mint NFT</button>
+                {% endif %}
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    
+  
+
+    <div id="Activity" class="tabcontent">
+        <h2>Activity</h2>
+        <p>Activity list</p>
+    </div>
+  
+    <div id="transfer-dialog" class="popup">
+      <h3>Transfer Tokens</h3>
+      <label for="transfer-type">Type:</label>
+      <input type="text" id="transfer-type"><br><br>
+      <label for="transfer-id">ID:</label>
+      <input type="text" id="transfer-id"><br><br>
+      <label for="transfer-value">Value:</label>
+      <input type="text" id="transfer-value"><br><br>
+      <label for="transfer-address">Address:</label>
+      <input type="text" id="transfer-address"><br><br>
+      <button onclick="sendTokens()">Send</button>
+  </div>
+  <div id="create-token-step1" class="popup">
+    <button id="close-create-token-popup" onclick="closeCreateTokenPopup()">
+      <i class="fas fa-times"></i> <!-- Close icon -->
+    </button>
+  
+    <h2>Create Token - Step 1</h2>
+
+    <form action="/create_token" method="POST">
+      <label for="type">Type:</label>
+      <select id="type" name="type" required>
+        <option value="FT">FT</option>
+        <option value="NFT">NFT</option>
+      </select>
+  
+      <label for="maxsupply">Max Supply:</label>
+      <input type="text" id="maxsupply" name="maxsupply" required><br>
+  
+      <label for="metadata">Metadata:</label>
+      <input type="text" id="metadata" name="metadata" required><br>
+  
+      <label for="address">Address:</label>
+      <select id="address-list" name="address" required></select><br>
+  
+      <button type="submit">Submit and Upload</button>
+    </form>
+    <p id="create-token-output"></p>
+  </div>
+  
+  <script>
+    function populateAddresses() {
+      fetch('/get_addresses')
+        .then(response => response.json())
+        .then(data => {
+          if (data.addresses) {
+            // Addresses retrieved successfully
+            const addresses = JSON.parse(data.addresses);
+            const addressList = document.getElementById('address-list');
+            addressList.innerHTML = ''; // Clear previous options
+  
+            addresses.forEach(address => {
+              const option = document.createElement('option');
+              option.value = address;
+              option.textContent = address;
+              addressList.appendChild(option);
+            });
+          } else {
+            // Error retrieving addresses
+            console.error(data.error);
+          }
+        })
+        .catch(error => {
+          // Error making the request
+          console.error(error);
+        });
+    }
+    function closeCreateTokenPopup() {
+    const createTokenPopup = document.getElementById('create-token-step1');
+    createTokenPopup.style.display = 'none';
+  }
+  
+    populateAddresses();
+  </script>
+    
+  
+<!-- Mint Token Popup -->
+<div id="mint-token-popup" class="popup">
+  <button id="close-mint-token-popup" onclick="closeMintTokenPopup()">
+    <i class="fas fa-times"></i> <!-- Close icon -->
+  </button>
+
+  <h2>Mint Token</h2>
+  <form action="/mint_token" method="POST">
+    <label for="type">Type:</label>
+<select id="type" name="type" required>
+  <option value="FT">FT</option>
+  <option value="NFT">NFT</option>
+</select>
+
+    <label for="id">Contract ID:</label>
+    <input type="text" id="id" name="id" required><br>
+
+    <label for="data">Decimal:</label>
+    <input type="text" id="data" name="data" required><br>
+
+    <label for="address">Address:</label>
+    <select id="address" name="address" required></select><br>
+
+    <button type="submit">Mint Token</button>
+  </form>
+  <p id="mint-token-output"></p>
+
+</div><script>
+  function populateAddresses() {
+    fetch('/get_addresses')
+      .then(response => response.json())
+      .then(data => {
+        if (data.addresses) {
+          // Addresses retrieved successfully
+          const addresses = JSON.parse(data.addresses);
+          const addressDropdown = document.getElementById('address');
+
+          // Clear existing options
+          addressDropdown.innerHTML = '';
+
+          // Add address options
+          addresses.forEach(address => {
+            const option = document.createElement('option');
+            option.value = address;
+            option.textContent = address;
+            addressDropdown.appendChild(option);
+          });
+        } else {
+          // Error retrieving addresses
+          console.error(data.error);
+        }
+      })
+      .catch(error => {
+        // Error making the request
+        console.error(error);
+      });
+  }
+  function closeMintTokenPopup() {
+    const mintTokenPopup = document.getElementById('mint-token-popup');
+    mintTokenPopup.style.display = 'none';
+  }
+  populateAddresses();
+</script>
+
+  <script>
+        function openTab(event, tabName) {
+            var i, tabcontent, tablinks;
+      
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+      
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+      
+            document.getElementById(tabName).style.display = "block";
+            event.currentTarget.className += " active";
+        }
+      
+        // Open the first tab by default
+        var defaultTab = document.getElementsByClassName("tablinks")[0];
+        defaultTab.click();
+
+ // Open Transfer Dialog
+ function openTransferDialog(type, id) {
+            document.getElementById("transfer-type").value = type;
+            document.getElementById("transfer-id").value = id;
+            document.getElementById("transfer-dialog").style.display = "block";
+           
+        }
+
+        // Send Tokens
+        function sendTokens() {
+            var type = document.getElementById("transfer-type").value;
+            var id = document.getElementById("transfer-id").value;
+            var value = document.getElementById("transfer-value").value;
+            var address = document.getElementById("transfer-address").value;
+            var command = `./novo-cli transfertoken "${type}" "${id}" "${value}" "${address}"`;
+            console.log("Command:", command);
+
+            // Perform necessary actions with the command (e.g., send the command to the server for execution)
+            executeTransaction(command);
+            
+            // Close Transfer Dialog
+            document.getElementById("transfer-dialog").style.display = "none";
+        }
+
+        // Execute Transaction on the Server
+        function executeTransaction(command) {
+            // Make an asynchronous request to the server to execute the transaction
+            // You can use AJAX, Fetch API, or any other method to send the request
+
+            // Example using Fetch API
+            fetch('/execute-transaction', {
+                method: 'POST',
+                body: JSON.stringify({ command: command }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Print the txid result
+                console.log('TxID:', data.txid);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+        </script>
+
+
+<script>
+  function openCreateTokenPopup() {
+    document.getElementById("create-token-step1").style.display = "block";
+  }
+
+
+
+
+  function openMintTokenPopup() {
+    document.getElementById("mint-token-popup").style.display = "block";
+  }
+</script>
+<script>
+  function openTab(event, tabName) {
+      var i, tabcontent, tablinks;
+
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+      }
+
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+
+      document.getElementById(tabName).style.display = "block";
+      event.currentTarget.className += " active";
+  }
+
+  // Open the first tab by default
+  var defaultTab = document.getElementsByClassName("tablinks")[0];
+  defaultTab.click();
+
+
+</script> 
+
+
+
+</body>
+</html>

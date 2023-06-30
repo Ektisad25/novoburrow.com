@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Authentication Test</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #google-button {
+      display: block;
+      margin: 20px auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Google Authentication Test</h1>
+  <div id="google-button"></div>
+
+  <script>
+    function handleCredentialResponse(response) {
+      // Send the ID token to your server for verification
+      const idToken = response.credential;
+      
+      // Make an AJAX request to your server with the ID token
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/your-server-endpoint', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            // Request successful
+            console.log('Authentication successful');
+          } else {
+            // Request failed
+            console.log('Authentication failed');
+          }
+        }
+      };
+      
+      const requestData = {
+        idToken: idToken
+      };
+      
+      xhr.send(JSON.stringify(requestData));
+    }
+
+    function renderButton() {
+      gapi.signin2.render('google-button', {
+        'scope': 'profile email',
+        'width': 240,
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': handleCredentialResponse,
+      });
+    }
+  </script>
+
+  <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+</body>
+</html>

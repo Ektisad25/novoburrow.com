@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 50px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #007bff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #0069d9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Signup</h1>
+    <button class="button" onclick="getNewAddress()">Get New Address</button>
+    <button class="button" onclick="importPrivateKey()">Import Private Key</button>
+
+    <script>
+        function redirectToURL(url) {
+            window.location.href = url;
+        }
+
+        function getNewAddress() {
+            var walletName = prompt("Enter the name of your wallet:");
+            if (walletName) {
+                var url = "http://127.0.0.1:5000/getnewaddress?account=" + encodeURIComponent(walletName);
+                redirectToURL("http://127.0.0.1:5000/main?account=" + encodeURIComponent(walletName));
+            }
+        }
+
+        function importPrivateKey() {
+            var privateKey = prompt("Enter your private key:");
+            if (privateKey) {
+                var url = "http://127.0.0.1:5000/importprivatekey";
+                var formData = new FormData();
+                formData.append("private_key", privateKey);
+                formData.append("label", "true");
+                formData.append("rescan", "true");
+        
+                fetch(url, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(result => {
+                    // Check if import was successful
+                    if (result !== 'Error: Private key parameter is missing.') {
+                        // Redirect to main page
+                        redirectToURL("http://127.0.0.1:5000/main");
+                    } else {
+                        // Handle import error
+                        alert(result);
+                    }
+                })
+                .catch(error => {
+                    // Handle any errors
+                    console.error(error);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

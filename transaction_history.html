@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Transaction History</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .menu-toggle {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            background-color: #007bff;
+
+        }
+
+        .menu-toggle:hover {
+            color: blue;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f1f1f1;
+        }
+
+        .send {
+            background-color: red;
+        }
+
+        .receive {
+            background-color: green;
+        }
+        
+        .menu {
+            background-color: #0e0b0b;
+            width: 200px;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            transition: transform 0.3s;
+            z-index: 999;
+        }
+
+        .menu-button {
+            background-color: #f1f1f1;
+
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 999;
+
+        }
+
+        .menu-button i {
+            background-color: #f1f1f1;
+
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .menu-items {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+        }
+
+        .menu-item {
+            margin-bottom: 10px;
+            background-color: #040405;
+            font-weight: bold;
+            align-items: center;
+            justify-content: center; /* Center vertically */
+            display: block;
+            border: none;
+        
+        }
+
+        .menu-item a {
+            display: block;
+            padding: 10px 0;
+            font-weight: bold;
+            align-items: center;
+     
+            text-decoration: none;
+            color:#f1f1f1;
+            justify-content: center;
+        }
+
+        .menu-item a:hover {
+            background-color: #d41610;
+             color: #f1f1f1;
+        }
+
+        @media (max-width: 768px) {
+            .menu {
+                transform: translateX(-100%);
+            }
+        }
+
+        .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px; /* Added margin to separate from the text above */
+    }
+
+    .button-container button {
+        margin: 0 10px; /* Adjust the margin as desired */
+    }
+
+
+    .text-above {
+        text-align: center;
+        margin-bottom: 20px; /* Added margin to separate from the buttons */
+    }
+    .menu {
+            background-color: #0e0b0b;
+            width: 200px;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            transition: transform 0.3s;
+            z-index: 999;
+        }
+
+        .menu-button {
+            background-color: #f1f1f1;
+
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 999;
+
+        }
+
+        .menu-button i {
+            background-color: #f1f1f1;
+
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .menu-items {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+        }
+
+        .menu-item {
+            margin-bottom: 10px;
+            background-color: #040405;
+            font-weight: bold;
+            align-items: center;
+            justify-content: center; /* Center vertically */
+            display: block;
+            border: none;
+        
+        }
+
+        .menu-item a {
+            display: block;
+            padding: 10px 0;
+            font-weight: bold;
+            align-items: center;
+     
+            text-decoration: none;
+            color:#f1f1f1;
+            justify-content: center;
+        }
+
+        .menu-item a:hover {
+            background-color: #d41610;
+             color: #f1f1f1;
+        }
+
+        @media (max-width: 768px) {
+            .menu {
+                transform: translateX(-100%);
+            }
+        }
+
+        .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px; /* Added margin to separate from the text above */
+    
+        }
+        .price {
+    display: flex;
+    align-items: center;
+}
+
+.price-text {
+    margin-right: 10px;
+    color:#ffffff
+}
+
+.price-image {
+    width: 30px; /* Adjust the width as needed */
+    height: 30px; /* Adjust the height as needed */
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="menu">
+        <ul class="menu-items">
+           <br><br> <li class="menu-item"><a href="/mainer.html">NOVO WALLET</a></li>
+            <li class="menu-item"><a href="/contract_unspent">TOKENS / NFT BALANCE</a></li>
+            <li class="menu-item"><a href="/transaction_history?account="> HISTORY ACTIVITY </a></li>
+            <li class="menu-item"><a href="/templates/ohlc.html">Chart</a></li>
+            <li class="menu-item"><a href="#">SETTINGS</a></li>
+        </ul>
+        <br><br><br><br>
+        <br><br><br><br>
+        <br>
+           <div>            
+            <img src="{{ url_for('static', filename='original.png') }}" alt="Image"width="30" height="30">
+            <h3 class="price-text">Novo Price: <span id="closePrice">{{ formatted_close_price }}</span> $</h3>
+        </div>     
+    </div>
+
+    <div class="menu-button" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        function toggleMenu() {
+            var menu = document.querySelector('.menu');
+
+            if (menu.style.transform === 'translateX(-100%)') {
+                menu.style.transform = 'translateX(0)';
+            } else {
+                menu.style.transform = 'translateX(-100%)';
+            }
+        }
+    </script>
+
+       
+    <script>
+        // Make a GET request to the /get_close_price route
+        fetch('/get_close_price')
+          .then(response => response.text())
+          .then(closePrice => {
+            // Update the content of the placeholder element with the received close price
+            document.getElementById('closePrice').textContent = closePrice;
+        
+        
+          })
+         </script>
+
+
+
+
+
+
+    <h2>Transaction History:</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Transaction ID</th>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Confirmations</th>
+                <th>Time</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr class="{% if transaction.category == 'send' %}send{% elif transaction.category == 'receive' %}receive{% endif %}">
+                <td>{{ transaction.txid }}</td>
+                <td>{{ transaction.amount }}</td>
+                <td>{{ transaction.category }}</td>
+                <td>{{ transaction.confirmations }}</td>
+                <td>{{ transaction.time|timestamp_to_datetime }}</td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        function openTab(event, tabName) {
+            var i, tabcontent, tablinks;
+      
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+      
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+      
+            document.getElementById(tabName).style.display = "block";
+            event.currentTarget.className += " active";
+        }
+      
+        // Open the first tab by default
+        var defaultTab = document.getElementsByClassName("tablinks")[0];
+        defaultTab.click();
+      
+      
+      </script> 
+</body>
+</html>

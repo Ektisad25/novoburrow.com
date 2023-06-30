@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Token</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-...your-integrity-hash... " crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      z-index: 9999;
+      display: none;
+    }
+
+    .popup label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .popup input[type="text"] {
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .popup button {
+      padding: 5px 10px;
+      background-color: #ccc;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .popup button:hover {
+      background-color: #bbb;
+    }
+    .popup label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+</style>
+</head>
+<body>
+    <h1>Token Created success</h1>
+    <h2>copy TXID to mint a token</h2>
+<!-- Add this code where you want to display the uploaded image -->
+<p id="mint-token-output">{{ output }}</p>
+<button onclick="copyOutput()"><i class="fas fa-copy"></i></button>
+<script>
+function copyOutput() {
+    const outputElement = document.getElementById('mint-token-output');
+    const outputText = outputElement.textContent;
+  
+    // Create a temporary textarea element to hold the output text
+    const textarea = document.createElement('textarea');
+    textarea.value = outputText;
+  
+    // Append the textarea to the document body
+    document.body.appendChild(textarea);
+  
+    // Select and copy the text from the textarea
+    textarea.select();
+    document.execCommand('copy');
+  
+    // Remove the temporary textarea
+    document.body.removeChild(textarea);
+  
+    // Alert or show a message to indicate the successful copy
+    alert('Output copied to clipboard!');
+  }
+</script>
+<button onclick="openMintTokenPopup()">Mint Now</button>
+
+<!-- Mint Token Popup -->
+<div id="mint-token-popup" class="popup">
+    <button id="close-mint-token-popup" onclick="openMintTokenPopup()">
+      <i class="fas fa-times"></i> <!-- Close icon -->
+    </button>
+  
+    <h2>Mint Token</h2>
+    <form action="/mint_token" method="POST">
+      <label for="type">Type:</label>
+  <select id="type" name="type" required>
+    <option value="FT">FT</option>
+    <option value="NFT">NFT</option>
+  </select>
+  
+      <label for="id">Contract ID:</label>
+      <input type="text" id="id" name="id" required><br>
+  
+      <label for="data">Decimal:</label>
+      <input type="text" id="data" name="data" required><br>
+  
+      <label for="address">Address:</label>
+      <select id="address" name="address" required></select><br>
+  
+      <button type="submit">Mint Token</button>
+    </form>
+    <p id="mint-token-output"></p>
+  
+  </div><script>
+    function openMintTokenPopup() {
+    document.getElementById("mint-token-popup").style.display = "block";
+  }
+   function populateAddresses() {
+      fetch('/get_addresses')
+        .then(response => response.json())
+        .then(data => {
+          if (data.addresses) {
+            // Addresses retrieved successfully
+            const addresses = JSON.parse(data.addresses);
+            const addressDropdown = document.getElementById('address');
+  
+            // Clear existing options
+            addressDropdown.innerHTML = '';
+  
+            // Add address options
+            addresses.forEach(address => {
+              const option = document.createElement('option');
+              option.value = address;
+              option.textContent = address;
+              addressDropdown.appendChild(option);
+            });
+          } else {
+            // Error retrieving addresses
+            console.error(data.error);
+          }
+        })
+        .catch(error => {
+          // Error making the request
+          console.error(error);
+        });
+    }
+   
+    function closeMintTokenPopup() {
+      const mintTokenPopup = document.getElementById('mint-token-popup');
+      mintTokenPopup.style.display = 'none';
+    }
+    populateAddresses();
+  </script>
+      
+</body>
+</html>

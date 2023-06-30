@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Settings</title>
+  <style>
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Settings</h1>
+
+    <h2>General</h2>
+    <form id="general-settings-form">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name">
+
+      <label for="email">Email:</label>
+      <input type="text" id="email" name="email" placeholder="Enter your email">
+
+      <button type="submit">Save</button>
+    </form>
+
+    <h2>Password</h2>
+    <form id="password-form">
+      <label for="current-password">Current Password:</label>
+      <input type="password" id="current-password" name="current-password" placeholder="Enter your current password">
+
+      <label for="new-password">New Password:</label>
+      <input type="password" id="new-password" name="new-password" placeholder="Enter your new password">
+
+      <label for="confirm-password">Confirm Password:</label>
+      <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your new password">
+
+      <button type="submit">Change Password</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('general-settings-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      // Handle the form submission for general settings
+      // ...
+
+      // Optionally, display a success message or redirect to another page
+    });
+
+    document.getElementById('password-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      // Handle the form submission for password change
+      // ...
+
+      // Optionally, display a success message or redirect to another page
+    });
+  </script>
+</body>
+</html>

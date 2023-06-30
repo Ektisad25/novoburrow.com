@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NOVO-USD OHLC Chart</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #chart {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="chart"></div>
+
+    <script>
+        // Fetch OHLC data from the API
+        fetch('https://api.coingecko.com/api/v3/coins/novo-9b9480a5-9545-49c3-a999-94ec2902cedb/ohlc?vs_currency=usd&days=1&precision=12')
+            .then(response => response.json())
+            .then(apiData => {
+                const transformedData = apiData.map(entry => [
+                    entry[0],
+                    entry[1],
+                    entry[2],
+                    entry[3],
+                    entry[4]
+                ]);
+
+                // Separate the data into OHLC format
+                const dates = transformedData.map(entry => new Date(entry[0]));
+                const opens = transformedData.map(entry => entry[1]);
+                const highs = transformedData.map(entry => entry[2]);
+                const lows = transformedData.map(entry => entry[3]);
+                const closes = transformedData.map(entry => entry[4]);
+
+                // Create the candlestick chart
+                const data = [{
+                    type: 'candlestick',
+                    x: dates,
+                    open: opens,
+                    high: highs,
+                    low: lows,
+                    close: closes,
+                    increasing: { line: { color: '#00AD5F' } },
+                    decreasing: { line: { color: '#FF4A4A' } },
+                    line: { width: 1 }
+                }];
+
+                const layout = {
+                    title: 'NOVO-USD OHLC Chart',
+                    xaxis: {
+                        title: 'Date',
+                        type: 'date',
+                        tickformat: '%Y-%m-%d'
+                    },
+                    yaxis: {
+                        title: 'Price (USD)',
+                        tickformat: '.8f',
+                        hoverformat: '.8f'
+
+                    }
+                };
+
+                Plotly.newPlot('chart', data, layout);
+            })
+            .catch(error => console.log(error));
+    </script>
+</body>
+</html>

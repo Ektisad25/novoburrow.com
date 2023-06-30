@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <title>Welcome Novo wallet</title>
+    <style>
+        /* Styles pour chaque section */
+.section {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fcfafa;
+    font-size: 2rem;
+
+    writing-mode: horizontal-tb;
+}        
+        /* Styles pour la transition entre les sections */
+        body {
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        /* Ajoutez une classe active à la section visible pour personnaliser l'effet de transition */
+        .section.active {
+            background-color: #000; /* Couleur de fond de la section active */
+            transition: background-color 0.5s ease-in-out;
+        }
+        .key-feature {
+        transition: transform 0.5s ease-in-out;
+    }
+    .key-feature {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.key-feature.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+#section1 {
+            background-color: #000; /* Couleur de fond pour la section 4 */
+            background-size: cover;
+            }
+        #section2 {
+            background-color: #000; /* Couleur de fond pour la section 4 */
+            background-size: cover;
+            }
+
+        #section3 {
+            background-color: #000; /* Couleur de fond pour la section 4 */
+            background-size: cover;
+
+        }
+
+        #section4 {
+            background-color: #000; /* Couleur de fond pour la section 4 */
+            background-size: cover;
+            
+        }
+
+        #section5 {
+            background-color: #000; /* Couleur de fond pour la section 4 */
+            background-size: cover;
+            
+        }
+        .faq-question {
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .faq-answer {
+            display: none;
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        
+        .faq-answer.show {
+            display: block;
+            animation: fade-in 0.5s;
+            border: 1px solid #ccc;
+         
+        }
+        
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        /* styles.css */
+.get-started-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+    background-color: #4CAF50;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.get-started-button:hover {
+    background-color: #45a049;
+}
+.tab-menu {
+  background-color: black;
+  overflow: hidden;
+}
+
+.tab-link {
+  background-color: black;
+  color: gray;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease;
+}
+
+.tab-link:hover {
+  background-color: white;
+  color: black;
+}
+
+.tab-content {
+  display: none;
+  padding: 0px;
+}
+
+/* Afficher le contenu de la page active */
+#page1 {
+  display: block;
+}
+.sect {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+}
+.slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.slides {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.slide {
+  position: relative;
+  flex: 0 0 100%;
+  display: none;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slide.active {
+  display: block;
+}
+
+.text-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+}
+
+.text-content h2 {
+  font-size: 24px;
+}
+
+.text-content p {
+  font-size: 16px;
+}
+
+.window-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.window {
+  width: 45%;
+  padding: 10px;
+  background-color: #631eb1;
+  border-radius: 5px;
+}
+
+.window p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.window a {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #333;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.window a:hover {
+  background-color: #555;
+}
+.sec {
+  text-align: center;
+  padding: 60px;
+}
+
+.sec h1 {
+  font-size: 28px;
+}
+
+.sec h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.sec h3 {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+.volume-bar {
+      width: 100%;
+      height: 20px;
+      background-color: #f2f2f2;
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .volume-progress {
+      height: 100%;
+      background-color: #4CAF50;
+      border-radius: 10px;
+      transition: width 0.5s ease;
+      width: 0; /* Initially set the width to 0 */
+    }
+
+    .volume-value {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #000;
+      font-weight: bold;
+    }
+
+    </style>
+</head>
+<body>
+
+    <div class="tab-menu">
+        <button class="tab-link" onclick="openTab(event, 'page1')">Page 1</button>
+        <button class="tab-link" onclick="openTab(event, 'page2')">Page 2</button>
+        <button class="tab-link" onclick="openTab(event, 'page3')">Page 3</button>
+        <button class="tab-link" onclick="openTab(event, 'page4')">Page 4</button>
+        <a class="get-started-button " href="/mainer.html">connect your wallet</a>
+        <a class="get-started-button " href="/create_wallet">generate wallet</a>
+
+      </div>
+      
+      <!-- Contenu des pages -->
+      <div id="page1" class="tab-content">
+        <!-- Contenu de la page 1 -->
+      </div>
+      <div id="page2" class="tab-content">
+        <!-- Contenu de la page 2 -->
+      </div>
+      <div id="page3" class="tab-content">
+        <!-- Contenu de la page 3 -->
+      </div>
+      <div id="page4" class="tab-content">
+        <!-- Contenu de la page 4 -->
+      </div>
+          
+<div class="section" id="section1">
+
+  <section class="slider">
+    <div class="slides">
+      <div class="slide">
+        <img src="{{ url_for('static', filename='original.png') }}" alt="Image 1">
+        <div class="text-content">
+          <h1>Wallet transaction</h1>
+          <h2>Send and receive Novo</h2>
+        </div>
+      </div>
+      <div class="slide">
+        <img src="{{ url_for('static', filename='giphy.gif') }}" alt="Image 2">
+        <div class="text-content">
+          <h1>FT Tokens</h1>
+          <h2>Create send and receive fungible tokens</h2>
+        </div>
+      </div>
+      <div class="slide">
+        <img src="{{ url_for('static', filename='NFT.gif') }}" alt="Image 3">
+        <div class="text-content">
+          <h1>NFT</h1>
+          <h2>Create mint send NFT</h2>
+        </div>
+      </div>
+    </div>
+  </section>
+ </div> 
+            <script>
+document.addEventListener("DOMContentLoaded", function() {
+  var slides = document.querySelectorAll(".slide");
+  var currentSlide = 0;
+
+  // Show the first slide
+  slides[currentSlide].classList.add("active");
+
+  function showSlide(index) {
+    if (index < 0 || index >= slides.length) return;
+    
+    // Hide the current slide
+    slides[currentSlide].classList.remove("active");
+    
+    // Show the new slide
+    slides[index].classList.add("active");
+    
+    // Update current slide index
+    currentSlide = index;
+  }
+
+  setInterval(function() {
+    // Calculate the index of the next slide
+    var nextSlideIndex = currentSlide + 1;
+    if (nextSlideIndex >= slides.length) {
+      nextSlideIndex = 0;
+    }
+    
+    // Show the next slide
+    showSlide(nextSlideIndex);
+  }, 3000);
+});
+      </script>
+
+      
+      
+   
+    <!-- Section 2 -->
+    <div class="section" id="section2">
+        <h1>Novo Burrow wallet</h1>
+        <p>Novo Wallet is a secure and user-friendly digital wallet designed to provide a seamless experience for managing and transacting with cryptocurrency. It serves as a decentralized storage solution for storing and accessing digital assets, specifically tailored for the Novo blockchain ecosystem.</p>
+        <a class="get-started-button" href="/templates/welcome.html">Chart</a>
+
+    </div>
+
+    <!-- Section 3 -->
+    <div class="section" id="section3">
+        <h1>Unleashing the true potential of programmable money</h1>
+<p>Novo reimagines the classic UTXO-based scalable technology by refining its core infrastructure and virtual machine. This enhancement unleashes the technology's considerably untapped potential for parallelizable transaction processing and Layer-1 programmability.</p>
+    </div>
+        
+    <!-- Section 4 -->
+    <div class="section" id="section4">
+      <div class="sec" id="section4">
+      <h1>NEXT DEVELOPMENT</h1>
+      <div class="window-container">
+        <div class="window">
+          <h2>Web3 Novo Social Media</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tempor felis et justo consectetur, vitae dignissim nulla tristique.</p>
+          <a href="#">Learn More</a>
+          <div class="volume-bar">
+            <div class="volume-fill"></div>
+            <div class="volume-text">
+              <span class="volume-value"></span>/<span class="volume-max"></span>
+            </div>
+          </div>
+                  </div>
+        
+        <div class="window">
+          <h2>Novo Tokens DEX</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tempor felis et justo consectetur, vitae dignissim nulla tristique.</p>
+          <a href="#">Learn More</a>
+        </div>
+      </div>
+      <div class="window-container">
+        <div class="window">
+          <h2>Android Wallet</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tempor felis et justo consectetur, vitae dignissim nulla tristique.</p>
+          <a href="#">Learn More</a>
+        </div>
+        <div class="window">
+          <h2>Others</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tempor felis et justo consectetur, vitae dignissim nulla tristique.</p>
+          <a href="#">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+var volumeValue = document.querySelector('.volume-value');
+var volumeMax = document.querySelector('.volume-max');
+var volumeFill = document.querySelector('.volume-fill');
+
+// Fetch the data from the URL
+fetch('https://novoexplorer.com/ext/getbalance/12wcKLFXedVb3j2Goc688ishCAf41d2JgK')
+  .then(function(response) {
+    // Check if the response was successful
+    if (response.ok) {
+      return response.json(); // Parse the response as JSON
+    } else {
+      throw new Error('Failed to fetch data');
+    }
+  })
+  .then(function(data) {
+    // Update the volume value element
+    volumeValue.textContent = data.balance;
+
+    // Set the max value
+    var maxValue = 100; // Set a default max value or calculate based on your requirements
+    volumeMax.textContent = maxValue;
+
+    // Calculate the fill percentage
+    var fillPercentage = (data.balance / maxValue) * 100;
+
+    // Update the width of the volume fill element
+    volumeFill.style.width = fillPercentage + '%';
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
+</script>
+  <!-- Section 5 -->
+    <div class="section" id="faq-section">
+        <h1>Frequently Asked Questions</h1>
+        
+        <div class="faq-question">Q: What is Novo Wallet?</div>
+        <div class="faq-answer">A: Novo Wallet is a secure and user-friendly digital wallet designed to provide a seamless experience for managing and transacting with cryptocurrency. It serves as a decentralized storage solution for storing and accessing digital assets, specifically tailored for the Novo blockchain ecosystem.</div>
+        
+        <div class="faq-question">Q: How can I ensure the security of my funds in Novo Wallet?</div>
+        <div class="faq-answer">A: Novo Wallet employs advanced encryption techniques to ensure the safety of private keys and sensitive data, protecting users' funds from unauthorized access.</div>
+        
+        <div class="faq-question">Q: Is Novo Wallet compatible with multiple cryptocurrencies?</div>
+        <div class="faq-answer">A: Yes, Novo Wallet supports multiple cryptocurrencies, allowing users to store, send, and receive different digital assets within a single platform.</div>
+        
+        <div class="faq-question">Q: How user-friendly is Novo Wallet?</div>
+        <div class="faq-answer">A: Novo Wallet offers an intuitive and easy-to-use interface, enabling users to effortlessly manage their cryptocurrency holdings and perform various transactions.</div>
+    </div>
+    <!-- Ajoutez des images de fond à chaque section en utilisant le style CSS -->
+
+    <!-- Script JavaScript pour ajouter l'effet de transition -->
+    <script>
+        window.addEventListener("scroll", function() {
+            const sections = document.querySelectorAll(".section");
+            const currentSection = Array.from(sections).find(section => {
+                const rect = section.getBoundingClientRect();
+                return rect.top <= 0 && rect.bottom > 0;
+            });
+
+            // Supprimez la classe "active" de toutes les sections
+            sections.forEach(section => section.classList.remove("active"));
+
+            // Ajoutez la classe "active" à la section visible
+            if (currentSection) {
+                currentSection.classList.add("active");
+            }
+        });
+
+    </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(".faq-question").click(function() {
+            $(this).next(".faq-answer").toggleClass("show");
+        });
+    });
+</script>
+</body>
+</html>
